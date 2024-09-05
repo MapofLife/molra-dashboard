@@ -1,33 +1,34 @@
 "use client"
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import Map from 'ol/Map';
-import TileLayer from 'ol/layer/Tile';
-import View from 'ol/View';
-import XYZ from 'ol/source/XYZ';
 import 'ol/ol.css';
-import { fetchSites, fetchLayers } from '@/utils/molra';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
+
 import { Feature } from 'ol';
-import { Polygon } from 'ol/geom';
-import { fromLonLat } from 'ol/proj';
-import { getOrthomosaicLayer } from './ortho';
-import { Style, Fill, Stroke, Text } from 'ol/style';
-import GeoJSON from 'ol/format/GeoJSON';
-import { Select } from 'ol/interaction';
 import { pointerMove } from 'ol/events/condition';
-import { unByKey } from 'ol/Observable';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-import Image from 'next/image';
-import { TaxaBadge } from "@/components/ui/taxabadge2";
-import { TaxaDropdown } from "@/components/ui/taxa-dropdown";
-import { Badge } from "@/components/ui/badge";
-import { useVisualData } from '@/components/context/VisualDataContext';
-import { intersects } from 'ol/extent';
-import WebGLTileLayer from 'ol/layer/WebGLTile';
-import { Geometry } from 'ol/geom';
+import GeoJSON from 'ol/format/GeoJSON';
+import { Geometry, Polygon } from 'ol/geom';
+import { Select } from 'ol/interaction';
 import { Layer } from 'ol/layer';
+import TileLayer from 'ol/layer/Tile';
+import VectorLayer from 'ol/layer/Vector';
+import WebGLTileLayer from 'ol/layer/WebGLTile';
+import Map from 'ol/Map';
+import { unByKey } from 'ol/Observable';
+import { fromLonLat } from 'ol/proj';
+import VectorSource from 'ol/source/Vector';
+import XYZ from 'ol/source/XYZ';
+import { Fill, Stroke, Style } from 'ol/style';
+import View from 'ol/View';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+
+import {
+    Accordion, AccordionContent, AccordionItem, AccordionTrigger
+} from '@/components/ui/accordion';
+import { Badge } from '@/components/ui/badge';
+import { TaxaDropdown } from '@/components/ui/taxa-dropdown';
+import { TaxaBadge } from '@/components/ui/taxabadge2';
+import { fetchLayers, fetchSites } from '@/utils/molra';
+
+import { getOrthomosaicLayer } from './ortho';
 
 interface DSMLayerConfig {
   layer_url: string;
@@ -349,6 +350,7 @@ function OpenLayersMap({
 
     const fetchAndDisplaySiteAndLayers = async () => {
       try {
+        mapRef.current?.classList.add('spinner');
         const sites = await fetchSites();
         const layers = await fetchLayers(selectedSubsite);
         const selectedSite = sites.find((site: any) => site.site_id === selectedSubsite);
@@ -404,6 +406,7 @@ function OpenLayersMap({
       } catch (error) {
         console.error('Error fetching site and layers:', error);
       }
+      mapRef.current?.classList.remove('spinner')
     };
 
     fetchAndDisplaySiteAndLayers();
@@ -434,7 +437,6 @@ function OpenLayersMap({
       target: mapRef.current,
       view: new View({
         center: [0, 0],
-        zoom: 2,
       }),
     });
   
@@ -442,7 +444,7 @@ function OpenLayersMap({
     initialMap.on('loadend', () => mapRef.current?.classList.remove('spinner'));
   
     setMap(initialMap);
-  
+    
     return () => initialMap.setTarget(undefined);
   }, []);
 
