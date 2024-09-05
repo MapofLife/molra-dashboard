@@ -351,8 +351,6 @@ function OpenLayersMap({
     const fetchAndDisplaySiteAndLayers = async () => {
       try {
         mapRef.current?.classList.add('spinner');
-        
-        console.log('loading map')
         const sites = await fetchSites();
         const layers = await fetchLayers(selectedSubsite);
         const selectedSite = sites.find((site: any) => site.site_id === selectedSubsite);
