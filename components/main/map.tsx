@@ -354,6 +354,12 @@ const [initialCenteringDone, setInitialCenteringDone] = useState(false);
 
 useEffect(() => {
   if (!map || !selectedSubsite || initialCenteringDone) return;
+    const fetchAndDisplaySiteAndLayers = async () => {
+      try {
+        mapRef.current?.classList.add('spinner');
+        const sites = await fetchSites();
+        const layers = await fetchLayers(selectedSubsite);
+        const selectedSite = sites.find((site: any) => site.site_id === selectedSubsite);
 
   const fetchAndDisplaySiteAndLayers = async () => {
     try {
