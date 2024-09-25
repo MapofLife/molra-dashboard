@@ -1,24 +1,22 @@
 "use client"
 
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { PanelLeftOpen, Download } from "lucide-react";
-import OpenLayersMap from "./map";
-import CrownsTopBar from "@/components/topbars/crowns";
-import OrthoTopBar from "@/components/topbars/ortho";
-import BlankTopBar from "@/components/topbars/blank";
-import DSMTopBar from "@/components/topbars/dsm";
-import { Checkbox } from "@/components/ui/checkbox"
-import { CheckedState } from "@radix-ui/react-checkbox";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion-insights"
+import { Diameter, Download, PanelLeftOpen, Ruler } from 'lucide-react';
 import Image from 'next/image';
-import { Badge } from "@/components/ui/badge";
-import { Ruler, Diameter } from "lucide-react";
+import React, { useState } from 'react';
+
+import BlankTopBar from '@/components/topbars/blank';
+import CrownsTopBar from '@/components/topbars/crowns';
+import DSMTopBar from '@/components/topbars/dsm';
+import OrthoTopBar from '@/components/topbars/ortho';
+import {
+    Accordion, AccordionContent, AccordionItem, AccordionTrigger
+} from '@/components/ui/accordion-insights';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { CheckedState } from '@radix-ui/react-checkbox';
+
+import OpenLayersMap from './map';
 
 export default function Main() {
   const [isRightPanelVisible, setIsRightPanelVisible] = useState(true);
